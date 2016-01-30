@@ -1,5 +1,5 @@
 
-extends Sprite
+extends Node2D
 
 # member variables here, example:
 # var a=2
@@ -16,7 +16,7 @@ var button_was_pressed = false
 
 var camera = null
 var camera_offset = Vector2(0, 0)
-var camera_lerp_weight = 0.1
+var camera_lerp_weight = 3
 
 var doing_puzzles = false
 var doing_puzzles_opacity = 0.6
@@ -25,7 +25,7 @@ func _ready():
 	start_y = get_pos().y
 	button = get_node("button")
 	camera = get_node("../camera")
-	camera_offset = get_pos() - camera.get_pos()
+	camera_offset = camera.get_pos() - get_pos()
 	set_process(true)
 	
 func _process(deltatime):
@@ -33,6 +33,8 @@ func _process(deltatime):
 	calculate_physics(deltatime)
 	move_camera(deltatime)
 	change_animations(deltatime)
+	print(deltatime)
+
 	
 func check_input(deltatime):
 	if not button_was_pressed:
@@ -66,8 +68,8 @@ func calculate_physics(deltatime):
 	set_pos(pos)
 
 func move_camera(deltatime):
-	var camera_pos = get_pos() - camera_offset 
-	camera.set_pos(lerp2d(camera.get_pos(), camera_pos, camera_lerp_weight))
+	var camera_pos = get_pos() + camera_offset 
+	camera.set_pos(lerp2d(camera.get_pos(), camera_pos, camera_lerp_weight * deltatime))
 	
 func lerp2d(va, vb, weight):
 	return Vector2(lerp(va.x, vb.x, weight), lerp(va.y, vb.y, weight))
