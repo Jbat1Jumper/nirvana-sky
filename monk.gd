@@ -19,7 +19,10 @@ var camera_offset = Vector2(0, 0)
 var camera_lerp_weight = 3
 
 var doing_puzzles = false
-var doing_puzzles_opacity = 0.6
+var doing_puzzles_opacity = 0.7
+
+
+var puzzle_gong = load("res://puzzle_gong.scn")
 
 func _ready():
 	start_y = get_pos().y
@@ -90,7 +93,8 @@ func stop_thinking():
 	doing_puzzles = false
 		
 func generate_puzzle():
+	var puzzle_scn = puzzle_gong
+	var puzzle = puzzle_scn.instance()
+	get_node("../puzzle").add_child(puzzle)
 	doing_puzzles = true
-	var puzzle = get_node("../puzzle")
-	puzzle.show()
 	

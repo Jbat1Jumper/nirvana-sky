@@ -11,6 +11,8 @@ var button = null
 var gong = null
 var gong_distance = 200
 
+var monk = null
+
 var moving = false
 var move_offset = null
 
@@ -22,6 +24,9 @@ func _ready():
 	camera = get_node("/root/camera")
 	button = get_node("button")
 	gong = get_node("../gong")
+	
+	monk = get_node("../../../monk")
+	
 	set_process(true)
 
 func _process(deltatime):
@@ -60,5 +65,7 @@ func stop_moving():
 		gong()
 		
 func gong():
-	# gong.hide()
+	monk.stop_thinking()
+	get_node("../..").remove_child(get_node(".."))
+	#gong.hide()
 	# hide()
