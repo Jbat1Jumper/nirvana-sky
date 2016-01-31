@@ -66,12 +66,19 @@ func stop_moving():
 	moving = false
 	if get_pos().distance_to(gong.get_pos()) < gong_distance:
 		gong()
+	else:
+		miss_gong()
 		
 func done():
-	monk.stop_thinking()
+	monk.success_thinking()
+	get_node("../..").remove_child(get_node(".."))
+	
+func fail():
+	monk.fail_thinking()
 	get_node("../..").remove_child(get_node(".."))
 		
 func gong():
 	get_node("../anim/").play("hit_gong")
-	#gong.hide()
-	# hide()
+	
+func miss_gong():
+	get_node("../anim/").play("miss_gong")

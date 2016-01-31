@@ -107,7 +107,7 @@ func start_thinking():
 	
 	get_node("../puzzle").turn_on()
 	
-func stop_thinking():
+func success_thinking():
 	doing_puzzles = false
 	
 	tap_count = 1 + randi() % 3
@@ -115,6 +115,10 @@ func stop_thinking():
 	get_node("sprite").set_frame(1)
 	face_expression_time = 1
 	get_node("../puzzle").turn_off()
+		
+func fail_thinking():
+	success_thinking()
+
 		
 func generate_puzzle():
 	var puzzle_scn = puzzle_gong
