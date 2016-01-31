@@ -5,4 +5,7 @@ func _ready():
 	set_process(true)
 
 func _process(deltatime):
-	set_pos(get_pos()+direction*deltatime)
+	if get_pos().x < 2000:
+		set_pos(get_pos()+direction*deltatime)
+	else:
+		set_pos(start_position)
