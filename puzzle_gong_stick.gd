@@ -54,6 +54,8 @@ func check_input(deltatime):
 		stop_moving()
 
 func start_moving():
+	if get_node("../anim").is_playing():
+		return
 	moving = true
 	if camera == null:
 		var mouse_pos = get_viewport().get_mouse_pos()

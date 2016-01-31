@@ -5,17 +5,15 @@ extends Node
 # var a=2
 # var b="textvar"
 var player = null
+var music = null
 
 func _ready():
+	print("hi")
+	music = get_node("/root/loader/music")
 	goto("menu")
-	player = get_node("player")
-	player.play("ggj2016maintheme")
-	
 	set_process(true)
 	
 func _process(delta):
-	if not player.is_active():
-		player.play("ggj2016maintheme_loop")
 	for child in get_children():
 		if child.get_name() == "todelete":
 			remove_child(child)

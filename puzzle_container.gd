@@ -36,12 +36,16 @@ func lerp_opacity(deltatime):
 		set_opacity(target_opacity)	
 
 func turn_on():
+	if get_opacity() == 1.0:
+		return
 	fade_time_elapsed = 0.0
 	fade_time = 0.5
 	start_opacity = 0.0
 	target_opacity = 1.0
 	
 func turn_off():
+	if get_opacity() == 0.0:
+		return
 	fade_time_elapsed = 0.0
 	fade_time = 0.2
 	start_opacity = 1.0
