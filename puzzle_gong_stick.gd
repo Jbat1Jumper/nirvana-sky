@@ -9,7 +9,7 @@ var sprite = null
 var camera = null
 var button = null
 var gong = null
-var gong_distance = 200
+var gong_distance = 230
 
 var monk = null
 
@@ -39,7 +39,10 @@ func move_stick(deltatime):
 		return
 	if camera == null:
 		var mouse_pos = get_viewport().get_mouse_pos()
+		var last_pos = get_pos()
+		move_offset = move_offset * 8 * deltatime
 		set_pos(mouse_pos + move_offset)
+		set_rot(lerp(get_rot(), (get_pos() - last_pos).angle(), 1 * deltatime))
 	
 func lerp2d(va, vb, weight):
 	return Vector2(lerp(va.x, vb.x, weight), lerp(va.y, vb.y, weight))
@@ -64,8 +67,11 @@ func stop_moving():
 	if get_pos().distance_to(gong.get_pos()) < gong_distance:
 		gong()
 		
-func gong():
+func done():
 	monk.stop_thinking()
 	get_node("../..").remove_child(get_node(".."))
+		
+func gong():
+	get_node("../anim/").play("hit_gong")
 	#gong.hide()
 	# hide()

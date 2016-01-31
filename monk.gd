@@ -21,6 +21,8 @@ var camera_lerp_weight = 3
 var doing_puzzles = false
 var doing_puzzles_opacity = 0.7
 
+var tap_count = 5
+var tap_limit = null
 
 var puzzle_gong = load("res://puzzle_gong.scn")
 
@@ -36,23 +38,30 @@ func _process(deltatime):
 	calculate_physics(deltatime)
 	move_camera(deltatime)
 	change_animations(deltatime)
-	print(deltatime)
+	check_tap_limit(deltatime)
 
-	
+func check_tap_limit(deltatime):
+	if tap_limit != null and not doing_puzzles:
+		tap_limit -= deltatime
+		if tap_limit < 0:
+			start_thinking()
+		
+
 func check_input(deltatime):
 	if not button_was_pressed:
 		if button.is_pressed():
 			if not doing_puzzles:
+				tap_count -= 1
 				button_was_pressed = true
-				start_thinking()
+				if tap_count == 0:
+					start_thinking()
 				if speed > 0:
-					speed = 0
-				speed -= 300
-				print("Up!")
+					speed = -300
+				else:
+					speed -= (exp(speed/100.0)*2.9+0.1)*100
 	else:
 		if not button.is_pressed():
 			button_was_pressed = false
-			print("Release")
 		
 
 func calculate_physics(deltatime):
@@ -85,12 +94,16 @@ func change_animations(deltatime):
 		
 		
 func start_thinking():
-	print("start thinking")
 	generate_puzzle()
+	get_node("../puzzle").turn_on()
 	
 func stop_thinking():
-	print("stop thinking")
 	doing_puzzles = false
+	
+	tap_count = 1 + randi() % 3
+	tap_limit = 0.7 + (randi() % 15)/10.0
+	
+	get_node("../puzzle").turn_off()
 		
 func generate_puzzle():
 	var puzzle_scn = puzzle_gong
