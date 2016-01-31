@@ -87,3 +87,9 @@ func fail():
 func success():
 	monk.success_thinking()
 	get_node("..").remove_child(self)
+	
+func fail_sound():
+	get_node("/root/loader/player").play("Broken_Sitar")
+	
+func success_sound():
+	get_node("/root/loader/player").play("Nirvana")

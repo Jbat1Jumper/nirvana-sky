@@ -84,3 +84,12 @@ func gong():
 	
 func miss_gong():
 	get_node("../anim/").play("miss_gong")
+
+func fail_sound():
+	get_node("/root/loader/player").play("Broken_Sitar")
+	
+func success_sound():
+	if randi() % 100 > 50:
+		get_node("/root/loader/player").play("Gong_1")
+	else:
+		get_node("/root/loader/player").play("Gong_2")

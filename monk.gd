@@ -46,6 +46,7 @@ func _process(deltatime):
 	check_tap_limit(deltatime)
 	check_face_expression(deltatime)
 	check_halt_time(deltatime)
+	check_play_ohm(deltatime)
 	
 func check_halt_time(deltatime):
 	if doing_puzzles and halt_time != null:
@@ -70,19 +71,32 @@ func check_tap_limit(deltatime):
 		if tap_limit < 0:
 			start_thinking()
 		
-
+var play_ohm_countdown = 0
+func play_ohm():
+	if play_ohm_countdown <= 0:
+		player.play("1_Om")
+		play_ohm_countdown = 0.5
+func check_play_ohm(deltatime):
+	if play_ohm_countdown > 0:
+		play_ohm_countdown -= deltatime
+		
 func check_input(deltatime):
 	if not button_was_pressed:
 		if button.is_pressed():
+			button_was_pressed = true
 			if not doing_puzzles:
 				tap_count -= 1
-				button_was_pressed = true
 				if tap_count == 0:
 					start_thinking()
+				play_ohm()
 				if speed > 0:
 					speed = -300
 				else:
 					speed -= (exp(speed/100.0)*2.9+0.1)*100
+			else:
+				player.play("Negative_1")
+				face_expression_time = 0.5
+				get_node("sprite").set_frame(2)
 	else:
 		if not button.is_pressed():
 			button_was_pressed = false
