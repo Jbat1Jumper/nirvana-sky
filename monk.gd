@@ -13,6 +13,15 @@ var start_y = 0.0
 var button = null
 var button_was_pressed = false
 
+var fall_roof = 0
+var fall_max = 400
+var monk_is_dead = false
+var nirvana_reached = false
+
+func height():
+	return - (get_pos().y - start_y)
+	
+
 var player = null
 
 var camera = null
@@ -47,6 +56,55 @@ func _process(deltatime):
 	check_face_expression(deltatime)
 	check_halt_time(deltatime)
 	check_play_ohm(deltatime)
+	check_fall(deltatime)
+	travel_to_nirvana(deltatime)
+	
+	
+	if height() > 20000:
+		gravity = 250
+	if height() > 15000:
+		gravity = 220
+	elif height() > 10000:
+		gravity = 200
+	elif height() > 5000:
+		gravity = 180
+		
+	if height() > 5000:
+		nirvana_reached = true
+		get_node("../fader").set_pos(get_pos() + camera_offset)
+		#get_node("/root/loader").goto("nirvana")
+		get_node("anim").play("fade_to_fer")
+		get_node("..").remove_child(get_node("../puzzle"))
+	
+
+var nirvana_timer = 3
+func travel_to_nirvana(deltatime):
+	if nirvana_reached:
+		nirvana_timer -= deltatime
+		if nirvana_timer < 0:
+			get_node("/root/loader").goto("nirvana")
+		
+
+func go_to_fer():
+	get_node("/root/loader").goto("nirvana")
+	
+	
+func check_fall(deltatime):
+	if not monk_is_dead:
+		if fall_roof < height():
+			fall_roof = height()
+		else:
+			var fall_amount = fall_roof - height()
+			if fall_amount > fall_max:
+				fall()
+
+func fall():
+	monk_is_dead = true
+	get_node("anim").play("dead")
+	get_node("..").remove_child(get_node("../puzzle"))
+	halt_time = 1000
+	get_node("sprite").set_frame(2)
+	face_expression_time = 1000
 	
 func check_halt_time(deltatime):
 	if doing_puzzles and halt_time != null:
@@ -57,7 +115,10 @@ func check_halt_time(deltatime):
 			success_thinking()
 			get_node("sprite").set_frame(0)
 		
-	
+		
+var camera_follows = false
+func bring_camera_here():
+	camera_follows = true
 		
 func check_face_expression(deltatime):
 	if face_expression_time != null:
@@ -80,19 +141,26 @@ func check_play_ohm(deltatime):
 	if play_ohm_countdown > 0:
 		play_ohm_countdown -= deltatime
 		
+func go_to_menu():
+	get_node("/root/loader").goto("menu")
+		
 func check_input(deltatime):
 	if not button_was_pressed:
-		if button.is_pressed():
+		if button.is_pressed() and not nirvana_reached:
 			button_was_pressed = true
+			if monk_is_dead and get_node("anim").get_current_animation() != "fade_to_menu":
+				get_node("anim").play("fade_to_menu")
+				return
 			if not doing_puzzles:
 				tap_count -= 1
 				if tap_count == 0:
 					start_thinking()
 				play_ohm()
-				if speed > 0:
-					speed = -300
-				else:
-					speed -= (exp(speed/100.0)*2.9+0.1)*100
+				if not monk_is_dead:
+					if speed > 0:
+						speed = -300
+					else:
+						speed -= (exp(speed/100.0)*2.9+0.1)*100
 			else:
 				player.play("Negative_1")
 				face_expression_time = 0.5
@@ -110,7 +178,11 @@ func calculate_physics(deltatime):
 		speed += gravity * deltatime
 	if abs(speed) > max_speed:
 		speed = max_speed * sign(speed)
-	pos = Vector2(pos.x, pos.y + speed * deltatime)
+	if not nirvana_reached:
+		pos = Vector2(pos.x, pos.y + speed * deltatime)
+	else:
+		pass
+		# pos = Vector2(pos.x, pos.y - 20 * deltatime)
 	if pos.y > start_y:
 		speed = 0.0
 		pos = Vector2(pos.x, start_y)
@@ -118,20 +190,27 @@ func calculate_physics(deltatime):
 	set_pos(pos)
 
 func move_camera(deltatime):
-	var camera_pos = get_pos() + camera_offset 
-	camera.set_pos(lerp2d(camera.get_pos(), camera_pos, camera_lerp_weight * deltatime))
+	if not monk_is_dead:
+		var camera_pos = get_pos() + camera_offset 
+		camera.set_pos(lerp2d(camera.get_pos(), camera_pos, camera_lerp_weight * deltatime))
+	if monk_is_dead and camera_follows:
+		var camera_pos = get_pos() + camera_offset 
+		camera.set_pos(lerp2d(camera.get_pos(), camera_pos, camera_lerp_weight * deltatime))
+	
 	
 func lerp2d(va, vb, weight):
 	return Vector2(lerp(va.x, vb.x, weight), lerp(va.y, vb.y, weight))
 	
 func change_animations(deltatime):
-	if doing_puzzles:
+	if doing_puzzles and not (monk_is_dead or nirvana_reached):
 		set_opacity(doing_puzzles_opacity)
 	else:
 		set_opacity(1.0)
-		
-		
+
 func start_thinking():
+	if monk_is_dead or nirvana_reached:
+		print("nope")
+		return
 	generate_puzzle()
 	
 	get_node("../puzzle").turn_on()
