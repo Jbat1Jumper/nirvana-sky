@@ -21,7 +21,7 @@ var start_pos = null
 func _ready():
 	start_pos = get_pos()
 	sprite = get_node("sprite")
-	camera = get_node("/root/camera")
+	camera = get_node("/root/scene/camera")
 	button = get_node("button")
 	gong = get_node("../gong")
 	

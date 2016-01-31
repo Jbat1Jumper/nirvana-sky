@@ -24,6 +24,8 @@ var doing_puzzles_opacity = 0.7
 var tap_count = 5
 var tap_limit = null
 
+var face_expression_time = 1
+
 var puzzle_gong = load("res://puzzle_gong.scn")
 
 func _ready():
@@ -39,6 +41,13 @@ func _process(deltatime):
 	move_camera(deltatime)
 	change_animations(deltatime)
 	check_tap_limit(deltatime)
+	check_face_expression(deltatime)
+		
+func check_face_expression(deltatime):
+	if face_expression_time != null:
+		face_expression_time -= deltatime
+		if face_expression_time <= 0:
+			get_node("sprite").set_frame(0)
 
 func check_tap_limit(deltatime):
 	if tap_limit != null and not doing_puzzles:
@@ -95,6 +104,7 @@ func change_animations(deltatime):
 		
 func start_thinking():
 	generate_puzzle()
+	
 	get_node("../puzzle").turn_on()
 	
 func stop_thinking():
@@ -102,7 +112,8 @@ func stop_thinking():
 	
 	tap_count = 1 + randi() % 3
 	tap_limit = 0.7 + (randi() % 15)/10.0
-	
+	get_node("sprite").set_frame(1)
+	face_expression_time = 1
 	get_node("../puzzle").turn_off()
 		
 func generate_puzzle():
