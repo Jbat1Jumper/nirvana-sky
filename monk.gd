@@ -62,14 +62,20 @@ func _process(deltatime):
 	
 	if height() > 20000:
 		gravity = 250
-	if height() > 15000:
-		gravity = 220
-	elif height() > 10000:
+	elif height() > 7000:
+		gravity = 210
+	elif height() > 6000:
 		gravity = 200
 	elif height() > 5000:
+		gravity = 190
+	elif height() > 4000:
 		gravity = 180
+	elif height() > 3000:
+		gravity = 170
+	elif height() > 2000:
+		gravity = 160
 		
-	if height() > 5000:
+	if height() > 8000:
 		nirvana_reached = true
 		get_node("../fader").set_pos(get_pos() + camera_offset)
 		#get_node("/root/loader").goto("nirvana")
@@ -89,13 +95,15 @@ func go_to_fer():
 	get_node("/root/loader").goto("nirvana")
 	
 	
+var fall_safe_height = 2000
+
 func check_fall(deltatime):
 	if not monk_is_dead:
 		if fall_roof < height():
 			fall_roof = height()
 		else:
 			var fall_amount = fall_roof - height()
-			if fall_amount > fall_max:
+			if fall_amount > fall_max and fall_amount > fall_safe_height:
 				fall()
 
 func fall():
