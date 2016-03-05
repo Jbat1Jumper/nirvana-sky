@@ -36,9 +36,6 @@ var tap_limit = null
 
 var face_expression_time = 1
 
-var puzzle_gong = load("res://puzzle_gong.scn")
-var puzzle_coins = load("res://puzzle_coins.scn")
-
 func _ready():
 	player = get_node("/root/loader/player")
 	start_y = get_pos().y
@@ -80,7 +77,7 @@ func _process(deltatime):
 		get_node("../fader").set_pos(get_pos() + camera_offset)
 		#get_node("/root/loader").goto("nirvana")
 		get_node("anim").play("fade_to_fer")
-		get_node("..").remove_child(get_node("../puzzle"))
+		get_node("..").remove_child(get_node("../puzzle_container"))
 	
 
 var nirvana_timer = 3
@@ -109,7 +106,7 @@ func check_fall(deltatime):
 func fall():
 	monk_is_dead = true
 	get_node("anim").play("dead")
-	get_node("..").remove_child(get_node("../puzzle"))
+	get_node("..").remove_child(get_node("../puzzle_container"))
 	halt_time = 1000
 	get_node("sprite").set_frame(2)
 	face_expression_time = 1000
@@ -219,9 +216,9 @@ func start_thinking():
 	if monk_is_dead or nirvana_reached:
 		print("nope")
 		return
-	generate_puzzle()
-	
-	get_node("../puzzle").turn_on()
+	get_node("../puzzle_container").create_puzzle()
+	doing_puzzles = true
+
 	
 func success_thinking():
 	doing_puzzles = false
@@ -230,28 +227,18 @@ func success_thinking():
 	tap_limit = 1.0 + (randi() % 15)/10.0
 	get_node("sprite").set_frame(1)
 	face_expression_time = 1
-	get_node("../puzzle").turn_off()
 		
 
 var halt_time = null
 
 func fail_thinking():
-	#success_thinking()
 	face_expression_time = 2
 	halt_time = 3
 	get_node("sprite").set_frame(2)
-	get_node("../puzzle").turn_off()
 	if speed < 0:
 		speed = speed / 2
 	speed += 200
 
-		
-func generate_puzzle():
-	var puzzle_scn = puzzle_coins
-	if randi() % 100 >= 50:
-		puzzle_scn = puzzle_gong
-	var puzzle = puzzle_scn.instance()
-	puzzle.difficulty = 5
-	get_node("../puzzle").add_child(puzzle)
-	doing_puzzles = true
+
+
 	

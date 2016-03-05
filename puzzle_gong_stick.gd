@@ -11,7 +11,7 @@ var button = null
 var gong = null
 var gong_distance = 230
 
-var monk = null
+var puzzle_container = null
 
 var moving = false
 var move_offset = null
@@ -25,7 +25,7 @@ func _ready():
 	button = get_node("button")
 	gong = get_node("../gong")
 	
-	monk = get_node("../../../monk")
+	puzzle_container = get_node("../..")
 	
 	set_process(true)
 
@@ -72,12 +72,10 @@ func stop_moving():
 		miss_gong()
 		
 func done():
-	monk.success_thinking()
-	get_node("../..").remove_child(get_node(".."))
+	puzzle_container.success()
 	
 func fail():
-	monk.fail_thinking()
-	get_node("../..").remove_child(get_node(".."))
+	puzzle_container.fail()
 		
 func gong():
 	get_node("../anim/").play("hit_gong")
@@ -86,10 +84,10 @@ func miss_gong():
 	get_node("../anim/").play("miss_gong")
 
 func fail_sound():
-	get_node("/root/loader/player").play("Broken_Sitar")
+	get_parent().play_sound("Broken_Sitar")
 	
 func success_sound():
 	if randi() % 100 > 50:
-		get_node("/root/loader/player").play("Gong_1")
+		get_parent().play_sound("Gong_1")
 	else:
-		get_node("/root/loader/player").play("Gong_2")
+		get_parent().play_sound("Gong_2")
