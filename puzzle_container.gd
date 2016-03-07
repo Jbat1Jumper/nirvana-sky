@@ -56,10 +56,24 @@ func _turn_off():
 	target_opacity = 0.0
 	
 func _choose_puzzle():
-	if randi() % 100 >= 50:
-		return ["puzzle_gong", 5]
-	else:
-		return ["puzzle_coins", 5]
+	var l = []
+	l.append([["puzzle_gong", 5], 3])
+	l.append([["puzzle_coins", 5], 3])
+	l.append([["puzzle_push", 5], 8])
+	
+	return _choose(l)
+
+func _choose(list):
+	var t = 0
+	for l in list:
+		t += l[1]
+	var r = randi() % t
+	t = 0
+	for l in list:
+		if r >= t and r < (t + l[1]):
+			return l[0]
+		t += l[1]
+	return null
 	
 func create_puzzle():
 	var p = _choose_puzzle()
@@ -81,7 +95,8 @@ func fail():
 	
 var scenes = {
 	"puzzle_gong": load("res://puzzle_gong.scn"),
-	"puzzle_coins": load("res://puzzle_coins.scn")
+	"puzzle_coins": load("res://puzzle_coins.scn"),
+	"puzzle_push": load("res://puzzle_push.scn")
 }
 
 func is_hidden():
