@@ -49,7 +49,7 @@ func process_row(a):
 	
 func action_chakra(a):
 	print("changing chakra")
-	pass
+	get_node("../chakra").change_chakra()
 	
 func action_puzzles(a):
 	print("changing puzzles to " + str(a))

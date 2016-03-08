@@ -32,6 +32,7 @@ var camera = null
 var camera_offset = Vector2(0, 0)
 var camera_lerp_weight = 3
 
+var success_doing_puzzles = true
 var doing_puzzles = false
 var doing_puzzles_opacity = 0.7
 
@@ -206,11 +207,12 @@ func start_thinking():
 		return
 	get_node("../puzzle_container").create_puzzle()
 	doing_puzzles = true
+	success_doing_puzzles = true
 
 	
 func success_thinking():
+	get_node("../chakra").check_change_chakra()
 	doing_puzzles = false
-	
 	tap_count = 2 + randi() % 4
 	tap_limit = 1.0 + (randi() % 15)/10.0
 	get_node("sprite").set_frame(1)
@@ -220,6 +222,7 @@ func success_thinking():
 var halt_time = null
 
 func fail_thinking():
+	success_doing_puzzles = false
 	face_expression_time = 2
 	halt_time = fall_time
 	get_node("sprite").set_frame(2)
