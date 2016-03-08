@@ -14,4 +14,4 @@
 5000, puzzles, gong, 5, 1, coins, 5, 1, push, 5, 1
 0, print, end of file reached
 0, gravity, 300
-1000, nirvan
+1000, nirvana
