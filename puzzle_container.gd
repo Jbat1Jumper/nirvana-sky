@@ -99,7 +99,8 @@ func fail():
 var scenes = {
 	"puzzle_gong": load("res://puzzle_gong.scn"),
 	"puzzle_coins": load("res://puzzle_coins.scn"),
-	"puzzle_push": load("res://puzzle_push.scn")
+	"puzzle_push": load("res://puzzle_push.scn"),
+	"puzzle_tv": load("res://puzzle_tv.scn")
 }
 
 func is_hidden():

@@ -2,16 +2,21 @@
 0, falltime, 3.0
 0, penality, 200
 0, window, 400
-2000, puzzles, coins, 1, 1
+1000, puzzles, gong, 1, 1
 0, chakra
 0, gravity, 170
-1800, puzzles, push, 5, 1
+1300, puzzles, push, 1, 1, gong, 2, 1
 0, chakra
 0, gravity, 190
-1600, puzzles, gong, 5, 1
+400, puzzles, tv, 1, 1
+1000, puzzles, push, 3, 1, gong, 3, 1, tv, 1, 1
+500, puzzles, tv, 2, 1, coins, 1, 2
 0, chakra
 0, gravity, 220
-5000, puzzles, gong, 5, 1, coins, 5, 1, push, 5, 1
+1000, puzzles, tv, 3, 1, gong, 3, 1, push, 5, 1, coins, 3, 2
+0, chakra
+0, gravity, 230
+4000, puzzles, gong, 5, 1, coins, 5, 1, push, 7, 1, tv, 5, 1
 0, print, end of file reached
 0, gravity, 300
 1000, nirvana
