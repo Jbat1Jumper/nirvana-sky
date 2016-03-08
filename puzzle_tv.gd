@@ -37,9 +37,11 @@ func checkWinCondition():
 	pass
 
 func brain_washed():
+	set_process(false)
 	get_node("tv/AnimationPlayer").play("puzzle_fail")
 
 func explode():
+	set_process(false)
 	get_node("tv/AnimationPlayer").play("puzzle_success")
 
 
