@@ -16,10 +16,14 @@ var button_was_pressed = false
 var fall_roof = 0
 var fall_max = 400
 var monk_is_dead = false
+var must_nirvana = false
 var nirvana_reached = false
 
 func height():
 	return - (get_pos().y - start_y)
+	
+func max_height():
+	return fall_roof
 	
 
 var player = null
@@ -55,24 +59,8 @@ func _process(deltatime):
 	check_play_ohm(deltatime)
 	check_fall(deltatime)
 	travel_to_nirvana(deltatime)
-	
-	
-	if height() > 20000:
-		gravity = 250
-	elif height() > 7000:
-		gravity = 210
-	elif height() > 6000:
-		gravity = 200
-	elif height() > 5000:
-		gravity = 190
-	elif height() > 4000:
-		gravity = 180
-	elif height() > 3000:
-		gravity = 170
-	elif height() > 2000:
-		gravity = 160
 		
-	if height() > 8000:
+	if must_nirvana and not nirvana_reached:
 		nirvana_reached = true
 		get_node("../fader").set_pos(get_pos() + camera_offset)
 		#get_node("/root/loader").goto("nirvana")
@@ -233,12 +221,14 @@ var halt_time = null
 
 func fail_thinking():
 	face_expression_time = 2
-	halt_time = 3
+	halt_time = fall_time
 	get_node("sprite").set_frame(2)
 	if speed < 0:
 		speed = speed / 2
-	speed += 200
+	speed += fall_penality
 
+var fall_penality = 200
+var fall_time = 3
 
 
 	

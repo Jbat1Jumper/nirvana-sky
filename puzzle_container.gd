@@ -55,13 +55,16 @@ func _turn_off():
 	start_opacity = 1.0
 	target_opacity = 0.0
 	
-func _choose_puzzle():
-	var l = []
-	l.append([["puzzle_gong", 5], 3])
-	l.append([["puzzle_coins", 5], 3])
-	l.append([["puzzle_push", 5], 8])
+var puzzles = [
+	[["puzzle_gong", 5], 3],
+	[["puzzle_coins", 5], 3],
+	[["puzzle_push", 5], 8]
+]
 	
-	return _choose(l)
+func _choose_puzzle():
+	return _choose(puzzles)
+	
+	
 
 func _choose(list):
 	var t = 0
@@ -77,7 +80,7 @@ func _choose(list):
 	
 func create_puzzle():
 	var p = _choose_puzzle()
-	var puzzle = scenes[p[0]].instance()
+	var puzzle = scenes["puzzle_" + p[0]].instance()
 	puzzle.set_name("puzzle")
 	puzzle.difficulty = p[1]
 	add_child(puzzle)

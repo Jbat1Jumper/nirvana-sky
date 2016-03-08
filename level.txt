@@ -1,0 +1,17 @@
+0, gravity, 150
+0, falltime, 3.0
+0, penality, 200
+0, window, 400
+2000, puzzles, coins, 1, 1
+0, chakra
+0, gravity, 170
+1800, puzzles, push, 5, 1
+0, chakra
+0, gravity, 190
+1600, puzzles, gong, 5, 1
+0, chakra
+0, gravity, 220
+5000, puzzles, gong, 5, 1, coins, 5, 1, push, 5, 1
+0, print, end of file reached
+0, gravity, 300
+1000, nirvan

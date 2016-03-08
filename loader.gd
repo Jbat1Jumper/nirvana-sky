@@ -27,3 +27,4 @@ func goto(name):
 	if old_scene != null:
 		old_scene.set_name("todelete")
 	add_child(scene)
+	
