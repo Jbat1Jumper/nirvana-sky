@@ -101,7 +101,8 @@ var scenes = {
 	"puzzle_coins": load("res://puzzle_coins.scn"),
 	"puzzle_push": load("res://puzzle_push.scn"),
 	"puzzle_tv": load("res://puzzle_tv.scn"),
-	"puzzle_kiss": load("res://puzzle_kiss.scn")
+	"puzzle_kiss": load("res://puzzle_kiss.scn"),
+	"puzzle_puzzle": load("res://puzzle_puzzle.scn")
 }
 
 func is_hidden():
