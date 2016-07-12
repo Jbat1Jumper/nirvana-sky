@@ -10,6 +10,7 @@ var camera = null
 var button = null
 var destino = null
 var distancia_destino = 230
+var pieza_ok = false
 
 var puzzle_container = null
 
@@ -35,7 +36,11 @@ func _process(deltatime):
 
 func move_stick(deltatime):
 	if not moving:
-		set_pos(lerp2d(get_pos(), start_pos, 2 * deltatime))
+		var c = 2
+		if pieza_ok:
+			c = 5
+		set_pos(lerp2d(get_pos(), start_pos, c * deltatime))
+		set_rot(lerp(get_rot(), 0, c * deltatime)) 
 		return
 	if camera == null:
 		var mouse_pos = get_viewport().get_mouse_pos()
@@ -68,9 +73,20 @@ func stop_moving():
 	moving = false
 	distancia_destino = button.get_size().length() / 2
 	if get_pos().distance_to(destino.get_pos()) < distancia_destino:
-		gong()
+		if all_pieces():
+			gong()
+		start_pos = destino.get_pos()
 	else:
 		miss_gong()
+		
+func all_pieces():
+	self.pieza_ok = true
+	var all = true
+	for n in range(1, 4):
+		var p = get_node("../pieza" + str(n))
+		if p and not p.pieza_ok:
+			all = false
+	return all
 		
 func done():
 	puzzle_container.success()
@@ -79,12 +95,20 @@ func fail():
 	puzzle_container.fail()
 		
 func gong():
-	# get_node("../anim/").play("hit_gong")
+	for n in range(1, 4):
+		var pa = get_node("../pieza" + str(n) + "/anim")
+		if pa:
+			pa.play("success")
+	get_node("../fondo/subfondo/anim").play("success")
 	print("Yeah")
 	pass
 	
 func miss_gong():
-	# get_node("../anim/").play("miss_gong")
+	for n in range(1, 4):
+		var pa = get_node("../pieza" + str(n) + "/anim")
+		if pa:
+			pa.play("fail")
+	get_node("../fondo/subfondo/anim").play("fail")
 	print("Ugggggg")
 	pass
 	
