@@ -2,7 +2,7 @@
 0, falltime, 3.0
 0, penality, 200
 0, window, 400
-1000, puzzles, puzzle , 1, 1
+1000, puzzles, cleaning , 1, 1, puzzle , 1, 1
 0, chakra
 0, gravity, 170
 1300, puzzles, push, 1, 1, gong, 2, 1
