@@ -15,6 +15,7 @@ var puzzle_container = null
 
 var moving = false
 var move_offset = null
+var done = false
 
 
 func _ready():
@@ -27,8 +28,9 @@ func _ready():
 	set_process(true)
 
 func _process(deltatime):
-	move_stick(deltatime)
-	check_input(deltatime)
+	if not done:
+		move_stick(deltatime)
+		check_input(deltatime)
 
 func move_stick(deltatime):
 	if not moving:
@@ -49,6 +51,8 @@ func check_input(deltatime):
 	if button.is_pressed():
 		start_moving()
 		clean_dirt()
+	if (not button.is_pressed() and moving == true):
+		miss_gong()
 
 func start_moving():
 	# if get_node("../anim").is_playing():
@@ -84,21 +88,15 @@ func fail():
 	puzzle_container.fail()
 		
 func gong():
-	for n in range(1, 4):
-		var pa = get_node("../pieza" + str(n) + "/anim")
-		if pa:
-			pa.play("success")
 	get_node("../fondo/subfondo/anim").play("success")
 	print("Yeah")
+	done = true
 	pass
 	
 func miss_gong():
-	for n in range(1, 4):
-		var pa = get_node("../pieza" + str(n) + "/anim")
-		if pa:
-			pa.play("fail")
 	get_node("../fondo/subfondo/anim").play("fail")
 	print("Ugggggg")
+	done = true
 	pass
 	
 func fail_sound():
